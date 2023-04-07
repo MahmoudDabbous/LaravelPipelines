@@ -35,4 +35,14 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the model's remember me token should be null.
+     */
+    public function doNotRememberMe(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'remember_token' => null,
+        ]);
+    }
 }
