@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Pipeline;
 
 class UserController extends Controller
 {
@@ -13,7 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::paginate(20));
+        return UserResource::collection(
+            Pipeline::send(User::query())
+                ->through([
+                    \App\Filters\ByName::class
+                ])->thenReturn()
+                ->paginate()
+        );
     }
 
     /**
